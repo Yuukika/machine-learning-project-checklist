@@ -1,0 +1,944 @@
+
+### Get to work
+
+导入模块  
+打印所用pyhton库的版本号：
+
+
+```python
+import sys
+print("python version:{}".format(sys.version))
+
+import pandas as pd
+print("pandas version:{}".format(pd.__version__))
+
+import matplotlib
+print("matplotlib version:{}".format(matplotlib.__version__))
+
+import numpy as np
+print("numpy version:{}".format(np.__version__))
+
+import IPython
+from IPython import display
+print("IPython version:{}".format(IPython.__version__))
+
+import sklearn
+print("sklearn version:{}".format(sklearn.__version__))
+
+#去除告警
+#ignore warnings
+import warnings
+warnings.filterwarnings('ignore')
+
+
+#可视化库
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import matplotlib.pylab as pylab
+import seaborn as sns
+from pandas.tools.plotting import scatter_matrix
+
+# 设置可视化库参数
+#show plots in Jupyter Notebook
+%matplotlib inline 
+mpl.style.use("ggplot")
+sns.set_style("white")
+pylab.rcParams["figure.figsize"] = 12,8
+```
+
+    python version:3.6.1 (v3.6.1:69c0db5050, Mar 21 2017, 01:21:04) 
+    [GCC 4.2.1 (Apple Inc. build 5666) (dot 3)]
+    pandas version:0.22.0
+    matplotlib version:2.1.1
+    numpy version:1.13.3
+    IPython version:6.2.1
+    sklearn version:0.19.1
+
+
+### 获取数据和读取数据
+
+```
+data = pd.read_csv(filename,sep, delimiter,header,names)
+```
+### 数据可视化分析
+```
+data.head(5)
+# 读取数据的前五行显示
+data.info
+# 数据每一列的信息，列名，数量，变量类别
+data.describe()
+# 数字型属性的各个统计量
+df.value_counts()
+# 计算分类属性各个类别的数量
+```
+一般情况下会遇到的属性类型包括：
+离散型的数据和连续型的数据，文本型数据和数字型数据，分类型数据等。
+可视化可以采用matplotlib,seaborn
+```
+import matplotlib.pyplot as plt
+import seaborn as sns
+%matplotlib inline
+
+fig = plt.figure(figsize=())#创建新的figure
+
+fig, (saxis1,saxis2) = plt.subplots(1,2,figsize=(8,4))#创建多个子图
+plot(x, y)        # plot x and y using default line style and color
+plot(x, y, 'bo')  # plot x and y using blue circle markers
+plot(y)           # plot y using x as index array 0..N-1
+plot(y, 'r+')     # ditto, but with red plusses
+a.plot(x1, y1, 'g^', x2, y2, 'g-')
+可以设置颜色，标记和线型
+plot(x, y, color="r", linestyle="dashed", marker="o")
+#https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html
+也可以合并在一起
+plot(x, y 'ko--')
+#设置刻度、标签、图例
+plt.legend()
+#设置标题、轴标签、刻度以及刻度标签
+plt.title('title_name', y=1.05, size=15)
+plt.xlabel("xlabelname")
+plt.ylabel("ylabelname")
+
+#通过例子来画图
+箱型图
+df.boxplot(sym='r*',vert=False,patch_artist=True,meanline=False,showmeans=True)
+plt.show()
+```
+![图片](https://upload-images.jianshu.io/upload_images/3605636-f59c5f0ff0335c30.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/490)
+```
+sym='r*',表示异常点的形状，
+vert=False，表示横向还是竖向（True），,
+patch_artist=True,（上下四分位框内是否填充，True为填充）
+meanline=False,showmeans=True，是否有均值线及其形状，meanline=True时，均值线也像中位数线一样是条红色线段，这样容易与中位数线混淆。
+另外，还有其他参数，比如notch表示中间箱体是否缺口，whis为设置数据的范围，showcaps、showbox是否显示边框
+http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.boxplot
+
+直方图
+n, bins, patches = plt.hist(x, num_bins,normed=1, facecolor='blue', alpha=0.5) #直方图函数，x为x轴的值，normed=1表示为概率密度，即和为一，绿色方块，色深参数0.5.返回n个概率，直方块左边线的x值，及各个方块对象 y = mlab.normpdf(bins, mu, sigma)#拟合一条最佳正态分布曲线
+y plt.plot(bins, y, 'r--') #绘制y的曲线 
+plt.xlabel('sepal-length') #绘制x轴 
+plt.ylabel('Probability') #绘制y轴 
+plt.title(r'Histogram : $\mu=5.8433$,$\sigma=0.8253$')#中文标题 u'xxx' plt.subplots_adjust(left=0.15)#左边距 
+plt.show()
+```
+![,,](https://upload-images.jianshu.io/upload_images/3605636-54097d77847f34b1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/389)
+```
+http://blog.csdn.net/suzyu12345/article/details/69029106
+在seaborn中图形大概分这么几类，因子变量绘图，数值变量绘图，两变量关系绘图，时间序列图，热力图，分面绘图等。
+
+因子变量绘图
+
+    箱线图boxplot
+    小提琴图violinplot
+    散点图striplot
+    带分布的散点图swarmplot
+    直方图barplot
+    计数的直方图countplot
+    两变量关系图factorplot
+
+回归图
+回归图只要探讨两连续数值变量的变化趋势情况，绘制x-y的散点图和回归曲线。
+
+    线性回归图lmplot
+    线性回归图regplot
+
+分布图
+包括单变量核密度曲线，直方图，双变量多变量的联合直方图，和密度图
+
+热力图
+1. 热力图heatmap
+
+聚类图
+1. 聚类图clustermap
+
+时间序列图
+1. 时间序列图tsplot
+2. 我的时序图plot_ts_d , plot_ts_m
+
+分面绘图
+1.分面绘图FacetGrid
+```
+#### 箱型图：
+```
+# 绘制箱线图
+g = sns.boxplot(x = train["ApplicantIncome"],showmeans=True, meanline=True)
+# 竖着放的箱线图，也就是将x换成y
+g = sns.boxplot(y = train["ApplicantIncome"],showmeans=True, meanline=True)
+```
+![](./application.png)
+```
+# 分组绘制箱线图
+g = sns.boxplot(y = train["ApplicantIncome"],showmeans=True, meanline=True)
+
+# 分组箱线图，分子因子是smoker，不同的因子用不同颜色区分
+# 相当于分组之后又分组
+ax = sns.boxplot(x="day", y="total_bill", hue="smoker",
+                    data=tips, palette="Set3")
+```                    
+#### violinplot小提琴图
+
+小提琴图其实是箱线图与核密度图的结合，箱线图展示了分位数的位置，小提琴图则展示了任意位置的密度，通过小提琴图可以知道哪些位置的密度较高。在图中，白点是中位数，黑色盒型的范围是下四分位点到上四分位点，细黑线表示须。外部形状即为核密度估计（在概率论中用来估计未知的密度函数，属于非参数检验方法之一）。
+```
+# 绘制小提琴图
+ax = sns.violinplot(x=tips["total_bill"])
+
+# 分组的小提琴图，同上面的箱线图一样通过X轴分组
+ax = sns.violinplot(x="day", y="total_bill", data=tips)
+
+# 通过hue分组的小提琴图，相当于分组之后又分组
+ax = sns.violinplot(x="day", y="total_bill", hue="smoker",
+                        data=tips, palette="muted")
+                        
+# 分组组合的小提琴图，其实就是hue分组后，各取一半组成一个小提琴图
+ax = sns.violinplot(x="day", y="total_bill", hue="smoker",
+                        data=tips, palette="muted", split=True)
+
+# 调整x轴顺序，同样通过order参数
+ax = sns.violinplot(x="time", y="tip", data=tips,
+                    order=["Dinner", "Lunch"])
+                    
+```
+#### stripplot散点图
+需要注意的是，seaborn中有两个散点图，一个是普通的散点图，另一个是可以看出分布密度的散点图。下面把它们花在一起就明白了。
+```
+# 普通的散点图
+ax1 = sns.stripplot(x=tips["total_bill"])
+# 带分布密度的散点图
+ax2 = sns.swarmplot(x=tips["total_bill"])
+```
+![](http://img.blog.csdn.net/20170403213713038?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3V6eXUxMjM0NQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+```
+# 分组的散点图
+ax = sns.stripplot(x="day", y="total_bill", data=tips)
+
+# 添加抖动项的散点图，jitter可以是0.1,0.2...这样的小数，表示抖动的程度大小
+ax = sns.stripplot(x="day", y="total_bill", data=tips, jitter=True)
+
+# 是不是想横着放呢，很简单的，x-y顺序换一下就好了
+ax = sns.stripplot(x="total_bill", y="day", data=tips,jitter=True)
+
+# 重点来了，分组绘制，而且是分组后分开绘制，在柱状图中，跟分组柱状图类似的。
+# 通过 hue, split 参数控制
+# 1.分组
+ax = sns.stripplot(x="sex", y="total_bill", hue="day",
+                    data=tips, jitter=True)
+# 2.分开绘制
+ax = sns.stripplot(x="day", y="total_bill", hue="smoker",
+                data=tips, jitter=True,palette="Set2", split=True)
+                
+# 散点图+小提起图
+# 两条命令一起运行就行了
+ax = sns.violinplot(x="day", y="total_bill", data=tips,inner=None, color=".8")
+ax = sns.stripplot(x="day", y="total_bill", data=tips,jitter=True)
+```
+#### swarmplot带分布的散点图
+swarmplt的参数和用法和stripplot的用法是一样的，只是表现形式不一样而已。
+```
+# 分组的散点图
+ax = sns.swarmplot(x="day", y="total_bill", data=tips)
+
+# 箱线图+散点图
+# whis 参数设定是否显示箱线图的离群点，whis=np.inf 表示不显示
+ax = sns.boxplot(x="tip", y="day", data=tips, whis=np.inf)
+ax = sns.swarmplot(x="tip", y="day", data=tips)
+
+# 小提琴图+散点图
+ax = sns.violinplot(x="day", y="total_bill", data=tips, inner=None)
+ax = sns.swarmplot(x="day", y="total_bill", data=tips,
+                    color="white", edgecolor="gray")
+```                   
+
+#### pointplot
+Show point estimates and confidence intervals using scatter plot glyphs.
+使用散点图符号显示点估计和置信区间。                    
+
+#### barplot直方图
+```
+sns.set_style("whitegrid")
+tips = sns.load_dataset("tips")
+ax = sns.barplot(x="day", y="total_bill", data=tips,)
+```
+![](http://seaborn.pydata.org/_images/seaborn-barplot-1.png)
+```
+# 分组的柱状图
+ax = sns.barplot(x="day", y="total_bill", hue="sex", data=tips,ci=0)
+
+# 绘制变量中位数的直方图，estimator指定统计函数
+from numpy import median
+ax = sns.barplot(x="day", y="tip", data=tips, 
+                    estimator=median, ci=0)#默认是mean
+                    
+# 改变主题颜色
+# palette="Blues_d"
+ax = sns.barplot("size", y="total_bill", data=tips, 
+                    palette="Blues_d")
+```
+#### countplot计数统计图
+对因子变量计数，然后绘制条形图
+```
+sns.set(style="darkgrid")
+titanic = sns.load_dataset("titanic")
+ax = sns.countplot(x="class", data=titanic)
+```
+![](http://seaborn.pydata.org/_images/seaborn-countplot-1.png)
+```
+# 分组绘图
+ax = sns.countplot(x="class", hue="who", data=titanic)
+
+# 如果是横着放，x用y替代
+ax = sns.countplot(y="class", hue="who", data=titanic)
+```
+#### factorplot
+这是一类重要的变量联合绘图。
+绘制 因子变量-数值变量 的分布情况图。
+```
+sns.set(style="ticks")
+exercise = sns.load_dataset("exercise")
+g = sns.factorplot(x='time', y='pulse', hue="kind", data =exercise)
+```
+![](http://seaborn.pydata.org/_images/seaborn-factorplot-1.png)
+```
+# 用小提琴图 反应 time-pulse 两变量的分布情形
+import seaborn as sns
+sns.set(style="ticks")
+exercise = sns.load_dataset("exercise")
+g = sns.factorplot(x="time", y="pulse", hue="kind",
+                    data=exercise, kind="violin")
+
+# 不同的deck（因子）绘制不同的alive（数值），col为分子图绘制，col_wrap每行画4个子图
+titanic = sns.load_dataset("titanic")
+g = sns.factorplot(x="alive", col="deck", col_wrap=4,
+                    data=titanic[titanic.deck.notnull()],
+                    kind="count", size=2.5, aspect=.8)
+```
+![](http://seaborn.pydata.org/_images/seaborn-factorplot-5.png)
+#### 数值分布绘图
+#### 直方图histplot
+直方图hist=True，核密度曲线rug=True
+```
+# 绘制数值变量的密度分布图
+# 默认既绘制核密度曲线，也绘制直方图
+sns.set(rc={"figure.figsize": (8, 4)}); np.random.seed(0)
+x = np.random.randn(100)
+ax = sns.distplot(x)
+```
+![](http://seaborn.pydata.org/_images/seaborn-distplot-1.png)
+
+```
+# 只绘制核密度曲线，不绘制直返图
+ax = sns.distplot(x, rug=True, hist=False)
+
+# 横着放
+ax = sns.distplot(x, vertical=True)
+```
+
+#### 核密度图 kdeplot
+```
+# 绘制核密度图
+import numpy as np; np.random.seed(10)
+import seaborn as sns; sns.set(color_codes=True)
+mean, cov = [0, 2], [(1, .5), (.5, 1)]
+x, y = np.random.multivariate_normal(mean, cov, size=50).T
+ax = sns.kdeplot(x)
+```
+![](http://seaborn.pydata.org/_images/seaborn-kdeplot-1.png)
+```
+# shade参数决定是否填充曲线下面积
+ax = sns.kdeplot(x, shade=True, color="r")
+
+ax = sns.kdeplot(x, y)
+```
+![](http://seaborn.pydata.org/_images/seaborn-kdeplot-3.png)
+```
+# 双变量密度图，相当于等高线图了
+# shade 参数改用颜色深浅表示密度的大小，不过不用，就真的是等高线了
+ax = sns.kdeplot(x, y, shade=True)
+```
+![](http://seaborn.pydata.org/_images/seaborn-kdeplot-4.png)
+```
+# 分组绘制双变量的核密度图
+# 相当于绘制两个核密度图，通过图可以看到密度中心
+# 类似于挖掘算法中聚类中心绘图
+iris = sns.load_dataset("iris")
+setosa = iris.loc[iris.species == "setosa"]  # 组1
+virginica = iris.loc[iris.species == "virginica"]  # 组2
+
+ax = sns.kdeplot(setosa.sepal_width, setosa.sepal_length, 
+                    cmap="Reds", shade=True, shade_lowest=False)
+
+ax = sns.kdeplot(virginica.sepal_width, virginica.sepal_length, 
+                    cmap="Blues", shade=True, shade_lowest=False)
+```
+![](http://seaborn.pydata.org/_images/seaborn-kdeplot-10.png)
+                    
+#### 双变量关系图jointplot
+
+joint，顾名思义，就是联合呀。    
+Draw a plot of two variables with bivariate and univariate graphs.    
+kind参数可以使用不同的图形反应两变量的关系，比如点图，线图，核密度图。   
+```
+# 默认绘制双变量的散点图，计算两个变量的直方图，计算两个变量的相关系数和置信度
+import numpy as np, pandas as pd; np.random.seed(0)
+import seaborn as sns; sns.set(style="white", color_codes=True)
+tips = sns.load_dataset("tips")
+g = sns.jointplot(x="total_bill", y="tip", data=tips)
+```
+![](http://seaborn.pydata.org/_images/seaborn-jointplot-1.png)
+```
+# 通过kind参数，除了绘制散点图，还要绘制拟合的直线，拟合的核密度图
+ g = sns.jointplot("total_bill", "tip", data=tips, kind="reg")
+```
+![](http://seaborn.pydata.org/_images/seaborn-jointplot-2.png)
+```
+# 使用六角形代替点图图
+g = sns.jointplot("total_bill", "tip", data=tips, kind="hex")
+
+# 绘制核密度图
+iris = sns.load_dataset("iris")
+g = sns.jointplot("sepal_width", "petal_length", data=iris, 
+                    kind="kde", space=0, color="g")
+
+# 控制图形的大小和颜色
+g = sns.jointplot("total_bill", "tip", data=tips, 
+                    size=5, ratio=3, color="g")
+```
+#### 变量关系组图pairplot
+就是绘制dataframe中各个变量两两之间的关系图。    
+在变量关系图中，最常见的就是 x-y的线图，x-y的散点图，x-y的回归图。其实这三者都可以通过lmplot绘制，只是控制不同的参数而已。x-y的线图，其实就是时间序列图，这里就不说了。    
+这里又说一遍散点图，是为了和前面的因子变量散点图相区分，前面的因子变量散点图，讲的是不同因子水平的值绘制的散点图，而这里是两个数值变量值散点图关系。为什么要用lmplot呢，说白了就是，先将这些散点画出来，然后在根据散点的分布情况拟合出一条直线。但是用lmplot总觉得不好，没有用scatter来得合适。
+```
+# x-y 的散点图，不画回归线，fit_reg=False
+
+tips = sns.load_dataset("tips")
+g = sns.lmplot(x="total_bill", y="tip", data=tips,
+                fit_reg=False,hue='smoker',scatter=True)
+
+# 只画回归线，不画散点图，scatter=False
+g = sns.lmplot(x="total_bill", y="tip", data=tips,
+                fit_reg=True,hue='smoker',scatter=False)
+                
+                
+import seaborn as sns; sns.set(style="ticks", color_codes=True)
+iris = sns.load_dataset("iris")
+g = sns.pairplot(iris)
+```
+![](http://seaborn.pydata.org/_images/seaborn-pairplot-1.png)
+```
+# 分组的变量关系图，似乎很厉害啊
+g = sns.pairplot(iris, hue="species")
+```
+![](http://seaborn.pydata.org/_images/seaborn-pairplot-2.png)
+```
+#用不同的颜色板
+g = sns.pairplot(iris, hue="species", palette="husl")
+
+# hue 分组后，不同的组用不同的形状标记
+g = sns.pairplot(iris, hue="species", markers=["o", "s", "D"])
+```
+![](http://seaborn.pydata.org/_images/seaborn-pairplot-4.png)
+```
+# 当然也可以只取dataframe中的一部分变量绘图
+g = sns.pairplot(iris, vars=["sepal_width", "sepal_length"])
+
+# 对角线默认绘制直方图，当然也可以绘制核密度图
+g = sns.pairplot(iris, diag_kind="kde")
+# 相应的，两变量关系图，也可以绘制线性回归图
+g = sns.pairplot(iris, kind="reg")
+```
+#### 热力图 heatmap
+```
+sns.heatmap(
+        df.corr(), 
+        cmap = colormap,
+        square=True, 
+        cbar_kws={'shrink':.9 }, 
+        ax=ax,
+        annot=True, 
+        linewidths=0.1,vmax=1.0, linecolor='white',
+        annot_kws={'fontsize':12 })
+
+uniform_data = np.random.rand(10, 12)
+ax = sns.heatmap(uniform_data)
+
+# 改变颜色映射的值范围
+ax = sns.heatmap(uniform_data, vmin=0, vmax=1)
+```
+![](http://seaborn.pydata.org/_images/seaborn-heatmap-1.png)
+![](http://seaborn.pydata.org/_images/seaborn-heatmap-2.png)
+
+```
+Plot a dataframe with meaningful row and column labels:
+# 绘制x-y-z的热力图，比如 年-月-销量 的热力图
+flights = sns.load_dataset("flights")
+flights = flights.pivot("month", "year", "passengers")
+ax = sns.heatmap(flights)
+```
+![](http://seaborn.pydata.org/_images/seaborn-heatmap-4.png)
+```
+# 绘制热力图，还要将数值写到热力图上
+ax = sns.heatmap(flights, annot=True, fmt="d")
+```
+![](http://seaborn.pydata.org/_images/seaborn-heatmap-5.png)
+```
+#增加网格线
+ax = sns.heatmap(flights, linewidths=.5)
+```
+![](http://seaborn.pydata.org/_images/seaborn-heatmap-6.png)
+```
+使用不同的颜色搭配
+ax = sns.heatmap(flights, cmap="YlGnBu")
+
+画上列标签不画行标签
+data = np.random.randn(50, 20)
+ax = sns.heatmap(data, xticklabels=2, yticklabels=False)
+```
+### 划分训练和测试集
+```
+from sklearn.model_selection import train_test_split
+train_set, test_set = trian_test_split(housing, test_size=0.2, random_state=42)
+```
+### Experimenting with Attribute Combinations
+
+
+### Prepare the data for machine learning Algorithms
+数据清理的主要四个步骤：correcting,completing,creating and converting
+1. 纠正异常值
+2. 填充缺失值
+3. 创建新属性
+4. 转换数据的格式类型，便于计算和引用
+
+#### data cleaning
+首先可以通过以下命令来查看数据集的缺失情况：
+```
+data.isnull().sum()
+```
+填充缺失值  
+```
+from sklearn.preprocessing import Import   
+imputer = Imputer(strategy="median")  
+imputer.fit(housing_num)  
+imputer.statistics_  
+#以上是填充整个数据集，也可以通过以下方法填充一个属性值:
+dataset['Age'].fillna(dataset['Age'].median(), inplace = True)
+dataset['Embarked'].fillna(dataset['Embarked'].mode()[0], inplace = True)
+```
+```
+从数据集中删除特定列
+data1.drop(drop_column, axis=1, inplace = True)
+```
+
+sklearn的一些设计原则：  
+所有的对象都具备简单的接口  
+Estimators. Any object that can estimate some parameters based on a dataset is called an estimator (e.g., an imputer is an estimator). The estimation itself is performed by the fit() method, and it takes only a dataset as a parameter (or two for supervised learning algorithms; the second dataset contains the labels). Any other parameter needed to guide the estimation process is considered a hyperparameter (such as an imputer’s strategy), and it must be set as an instance variable (generally via a constructor parameter).  
+
+Transformers. Some estimators (such as an imputer) can also transform a dataset; these are called transformers. Once again,the API is quite simple: the transformation is performed by the transform() method with the dataset to transform as a parameter. It returns the transformed dataset. This transformation generally relies on the learned parameters, as is the case for an imputer. All transformers also have a convenience method called fit_transform() that is equivalent to calling fit() and then transform() (but sometimes fit_transform() is optimized and runs much faster).
+Predictors. Finally, some estimators are capable of making predictions given a dataset; they are called predictors. For example, the LinearRegression model in the previous chapter was a predictor: it predicted life satisfaction given a country’s GDP per capita. A predictor has a predict() method that takes a dataset of new instances and returns a dataset of corresponding predictions. It also has a score() method that measures the quality of the predictions given a test set (and the corresponding labels in the case of supervised learning algorithms).17
+Inspection. All the estimator’s hyperparameters are accessible directly via public instance variables (e.g., imputer.strategy), and all the estimator’s learned parameters are also accessible via public instance variables with an underscore suffix (e.g., imputer.statistics_).
+
+
+#### handle text and categorical attributes
+将文本分类属性进行数字化
+```
+>>> from sklearn.preprocessing import LabelEncoder
+>>> encoder = LabelEncoder()
+>>> housing_cat = housing["ocean_proximity"]
+>>> housing_cat_encoded = encoder.fit_transform(housing_cat)
+>>> housing_cat_encoded
+array([1, 1, 4, ..., 1, 0, 3])”
+encoder.classes_
+
+>>> from sklearn.preprocessing import OneHotEncoder
+>>> encoder = OneHotEncoder()
+>>> housing_cat_1hot = encoder.fit_transform(housing_cat_encoded.reshape(-1,1))
+>>> housing_cat_1hot
+<16513x5 sparse matrix of type '<class 'numpy.float64'>'
+	with 16513 stored elements in Compressed Sparse Row format>”
+housing_cat_1hot.toarray()
+
+
+
+>>> from sklearn.preprocessing import LabelBinarizer
+>>> encoder = LabelBinarizer()
+>>> housing_cat_1hot = encoder.fit_transform(housing_cat)
+>>> housing_cat_1hot
+array([[0, 1, 0, 0, 0],
+       [0, 1, 0, 0, 0],
+       [0, 0, 0, 0, 1],
+       ...,
+       [0, 1, 0, 0, 0],
+       [1, 0, 0, 0, 0],
+       [0, 0, 0, 1, 0]])
+```
+Using the get_dummies will create a new column for every unique string in a certain column:使用get_dummies进行one-hot编码 ,对类目型的特征因子化。 
+dummies_Cabin = pd.get_dummies(data_train['Cabin'], prefix= 'Cabin')
+
+
+对于连续型分布的属性可以将它离散化:  
+cut区间范围等分，每个范围数据个数不等，qcut分位数等分，每个范围数据个数相等
+```
+dataset['FareBin'] = pd.qcut(dataset['Fare'], 4,labels=[1,2,3,4])
+dataset['AgeBin'] = pd.cut(dataset['Age'].astype(int), 5,labels=[0,1,2,3,4])
+```
+也可以用apply方法对属性值进行处理：
+```
+def get_title(name):
+        title_search = re.search('([A-Za-z]+)\.',name)
+        # if the title exists, extract and return it.
+        if title_search:
+            return title_search.group(1)
+        return ""
+data['Title'] = data.Name.apply(get_title)
+#apply()接受一个函数，对某个属性的每一项进行函数处理，当然这个函数也可以是匿名函数
+data['Title'] = data['Title'].apply(lambda x: 'Misc' if title_names.loc[x] == True else x)
+```
+还有一个方法map(),映射
+```
+data['Sex'] = data.Sex.map({'female':0,'male':1}).astype(int)
+```
+
+
+#### Custom transformers
+可以通过自己造轮子来构建符合自己需求的estimator,方法包括：fit(),trasform(),  
+继承TransformerMixin类来获得fit_transform()方法。  
+继承BaseEstimator类来获得get_params(), set_params(),and avoid \**args and \***kargs in your constructor
+ 
+```
+from sklearn.base import BaseEstimator, TransformerMixin
+
+rooms_ix, bedrooms_ix, population_ix, household_ix = 3, 4, 5, 6
+
+class CombinedAttributesAdder(BaseEstimator, TransformerMixin):
+    def __init__(self, add_bedrooms_per_room = True): # no *args or **kargs
+        self.add_bedrooms_per_room = add_bedrooms_per_room
+    def fit(self, X, y=None):
+        return self  # nothing else to do
+    def transform(self, X, y=None):
+        rooms_per_household = X[:, rooms_ix] / X[:, household_ix]
+        population_per_household = X[:, population_ix] / X[:, household_ix]
+        if self.add_bedrooms_per_room:
+            bedrooms_per_room = X[:, bedrooms_ix] / X[:, rooms_ix]
+            return np.c_[X, rooms_per_household, population_per_household,
+                         bedrooms_per_room]
+        else:
+            return np.c_[X, rooms_per_household, population_per_household]
+
+attr_adder = CombinedAttributesAdder(add_bedrooms_per_room=False)
+housing_extra_attribs = attr_adder.transform(housing.values)
+
+
+
+
+
+class PcaGmm(BaseEstimator):
+    def __init__(self, X_all,
+                 pca_components = 12, gmm_components = 4,
+                 covariance_type = "full", min_covar = 0.1,
+                 gamma = 0, C = 1.0):
+
+        self.pca_components = pca_components
+        self.gmm_components = gmm_components
+        self.covariance_type = covariance_type
+        self.min_covar = min_covar
+        self.gamma = gamma
+        self.C = C
+        self.X_all = X_all
+        X_all = X_all[:, :pca_components]
+        self.gmm = GMM(n_components = gmm_components,
+                       covariance_type = covariance_type,
+                       min_covar = min_covar)
+        self.gmm.fit(X_all)
+
+    def fit(self, X, y):
+        X = X[:, :self.pca_components]
+        X = self.gmm.predict_proba(X)
+        self.svm = SVC(C = self.C, gamma = self.gamma)
+        self.svm.fit(X, y)
+
+    def predict(self, X):
+        X = X[:, :self.pca_components]
+        return self.svm.predict(self.gmm.predict_proba(X))
+
+    def score(self, X, y):
+        y_pred = self.predict(X)
+        return accuracy_score(y, y_pred)
+
+    def transform(self, X, y = None):
+        X = X[:, :self.pca_components]
+        return self.gmm.predict_proba(X)
+
+    def __str__(self):
+        return "PCA(%d)-GMM(%d, %s, %f)-SVM(C=%f, gamma=%f)" % (self.pca_components, self.gmm_components,
+                                                                self.covariance_type, self.min_covar,
+                                                                self.C, self.gamma)
+```                                                                
+
+#### feature scaling 
+from sklearn.preporcessing import StandardScaler, MinMaxScaler  
+MinMaxScaler:$x =\frac{x - min}{max - min}$  
+StandardScaler:$x = \frac{x-mean}{var}$
+
+#### Transformation Pipelines
+可以通过Pipeline来执行一序列的数据转换
+```
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+
+num_pipeline = Pipeline([
+        ('imputer', Imputer(strategy="median")),
+        ('attribs_adder', CombinedAttributesAdder()),
+        ('std_scaler', StandardScaler()),
+    ])
+
+housing_num_tr = num_pipeline.fit_transform(housing_num)
+```
+pipeline 构造器接受一系列estimator作为参数，定义执行顺序，但是接收的最后一个estimator
+必须是transformers,必须具有fit_transfrom()方法。  
+当pipeline执行fit()方法，会对所有estimator执行fit_transfrom(),把前一个estimator传递给下一个
+estimator,直到最后一个estimator，会执行fit().   
+如果pipeline构造器执行的是fit_transform(),那最后一个estimator也执行
+fit_transform()  
+可以通过FeatureUnion()，接收不同类型的pipeline构造器，当执行transform(),会调用执行各个
+pipeline构造器的transform()方法，等所有的输出，然后合并结果并输出。
+```
+from sklearn.pipeline import FeatureUnion
+
+num_attribs = list(housing_num)
+cat_attribs = ["ocean_proximity"]
+
+num_pipeline = Pipeline([
+        ('selector', DataFrameSelector(num_attribs)),
+        ('imputer', Imputer(strategy="median")),
+        ('attribs_adder', CombinedAttributesAdder()),
+        ('std_scaler', StandardScaler()),
+    ])
+
+cat_pipeline = Pipeline([
+        ('selector', DataFrameSelector(cat_attribs)),
+        ('label_binarizer', LabelBinarizer()),
+    ])
+
+full_pipeline = FeatureUnion(transformer_list=[
+        ("num_pipeline", num_pipeline), ("cat_pipeline", cat_pipeline),
+    ])
+
+
+>>> housing_prepared = full_pipeline.fit_transform(housing)
+>>> housing_prepared
+array([[ 0.73225807, -0.67331551,  0.58426443, ...,  0.        ,
+         0.        ,  0.        ],
+       [-0.99102923,  1.63234656, -0.92655887, ...,  0.        ,
+         0.        ,  0.        ],
+       [...]
+>>> housing_prepared.shape
+(16513, 17)”
+```
+```
+from sklearn.base import BaseEstimator, TransformerMixin
+
+class DataFrameSelector(BaseEstimator, TransformerMixin):
+    def __init__(self, attribute_names):
+        self.attribute_names = attribute_names
+    def fit(self, X, y=None):
+        return self
+    def transform(self, X):
+        return X[self.attribute_names].values
+```
+
+
+### Select and Train Model
+#### Training and Evaluating on the Training Set
+```
+计算RMSE
+>>> from sklearn.metrics import mean_squared_error
+>>> housing_predictions = lin_reg.predict(housing_prepared)
+>>> lin_mse = mean_squared_error(housing_labels, housing_predictions)”
+>>> lin_rmse = np.sqrt(lin_mse)
+
+使用交叉验证计算RSME
+from sklearn.model_selection import cross_val_score
+scores = cross_val_score(tree_reg, housing_prepared, housing_labels,
+                         scoring="neg_mean_squared_error", cv=10)
+rmse_scores = np.sqrt(-scores) 
+
+sklearn.model_selection.cross_validate(estimator, X, y=None, groups=None, scoring=None, cv=None, n_jobs=1, verbose=0, fit_params=None, pre_dispatch=‘2*n_jobs’, return_train_score=’warn’)
+通过交叉验证评估，同时记录训练时间
+cv_results = cross_validate(alg,x,y,cv=cv_split)
+训练值的score:cv_results["train_score"]
+测试集的score:cv_results["test_score"]
+训练时间：cv_results["fit_time"]
+```
+
+from sklearn.model_selection import StratifiedKFold
+
+### Fine_tune your model
+from sklearn.model_selection import GridSearchCV
+DTC = DecisionTreeClassifier()
+
+adaDTC = AdaBoostClassifier(DTC, random_state=7)
+
+ada_param_grid = {"base_estimator__criterion" : ["gini", "entropy"],
+              "base_estimator__splitter" :   ["best", "random"],
+              "algorithm" : ["SAMME","SAMME.R"],
+              "n_estimators" :[3,4,5],
+              "learning_rate":  [0.1, 0.2, 0.3]}
+
+gsadaDTC = GridSearchCV(adaDTC,param_grid = ada_param_grid, cv=kfold, scoring="accuracy", n_jobs= 4, verbose = 1)
+
+gsadaDTC.fit(X_train,Y_train)
+
+gsadaDTC.best_estimator_
+gsadaDTC.best_params_
+![](scoring.jpg)
+
+### model selection
+在模型选择上可以参考以下图进行选择：
+![](http://scikit-learn.org/stable/_static/ml_map.png)
+常用的分类模型包括:
+Ensemble Methods:
+集成算法主要要三种流行方法:  
+Bagging算法：先将训练集分离成多个子集，然后通过各个子集训练多个模型。  
+装袋算法是一种提高分类准确率的算法，通过给定组合投票的方式获得最优解。比如你生病了，去n个医院看了n个医生，每个医生都给你开了药方，最后哪个药方的出现次数多，就说明这个药方越有可能是最优解。
+
+
+Gaussian Processes：
+
+```
+MLA = [
+    #Ensemble Methods
+    ensemble.AdaBoostClassifier(),
+    ensemble.BaggingClassifier(),
+    ensemble.ExtraTreesClassifier(),
+    ensemble.GradientBoostingClassifier(),
+    ensemble.RandomForestClassifier(),
+
+    #Gaussian Processes
+    gaussian_process.GaussianProcessClassifier(),
+    
+    #GLM
+    linear_model.LogisticRegressionCV(),
+    linear_model.PassiveAggressiveClassifier(),
+    linear_model.RidgeClassifierCV(),
+    linear_model.SGDClassifier(),
+    linear_model.Perceptron(),
+    
+    #Navies Bayes
+    naive_bayes.BernoulliNB(),
+    naive_bayes.GaussianNB(),
+    
+    #Nearest Neighbor
+    neighbors.KNeighborsClassifier(),
+    
+    #SVM
+    svm.SVC(probability=True),
+    svm.NuSVC(probability=True),
+    svm.LinearSVC(),
+    
+    #Trees    
+    tree.DecisionTreeClassifier(),
+    tree.ExtraTreeClassifier(),
+    
+    #Discriminant Analysis
+    discriminant_analysis.LinearDiscriminantAnalysis(),
+    discriminant_analysis.QuadraticDiscriminantAnalysis(),
+
+    
+    #xgboost: http://xgboost.readthedocs.io/en/latest/model.html
+    XGBClassifier()    
+    ]
+```
+创建算法对象后可以通过alg.__class__.__name__获取算法名  
+alg.get_params()获取算法超参数  
+定义基准精度，在不使用模型训练的情况下，我们可以人工达到的准确率和一些极端情况下，
+比方说2分类下全猜一类的情况下的精度作为基准精度。模型的精度至少要高于基准精度。
+
+
+```
+将决定数的结构可视化
+#Graph MLA version of Decision Tree: http://scikit-learn.org/stable/modules/generated/sklearn.tree.export_graphviz.html
+import graphviz 
+dot_data = tree.export_graphviz(dtree, out_file=None, 
+                                feature_names = data1_x_bin, class_names = True,
+                                filled = True, rounded = True)
+graph = graphviz.Source(dot_data) 
+graph
+```
+
+#### Tune Model with Feature Selection
+一、特征选择和降维
+
+1、相同点和不同点
+
+  特征选择和降维有着些许的相似点，这两者达到的效果是一样的，就是试图去减少特征数据集中的属性(或者称为特征)的数目；但是两者所采用的方式方法却不同：降维的方法主要是通过属性间的关系，如组合不同的属性得新的属性，这样就改变了原来的特征空间；而特征选择的方法是从原始特征数据集中选择出子集，是一种包含的关系，没有更改原始的特征空间。
+
+2、降维的主要方法
+
+    Principal Component Analysis(主成分分析)，详细见“简单易学的机器学习算法——主成分分析(PCA)”
+    Singular Value Decomposition(奇异值分解)，详细见“简单易学的机器学习算法——SVD奇异值分解”
+    Sammon's Mapping(Sammon映射)
+
+二、特征选择的目标
+
+  引用自吴军《数学之美》上的一句话：一个正确的数学模型应当在形式上是简单的。构造机器学习的模型的目的是希望能够从原始的特征数据集中学习出问题的结构与问题的本质，当然此时的挑选出的特征就应该能够对问题有更好的解释，所以特征选择的目标大致如下：
+
+    提高预测的准确性
+    构造更快，消耗更低的预测模型
+    能够对模型有更好的理解和解释
+
+三、特征选择的方法
+
+  主要有三种方法：
+
+1、Filter方法
+
+  其主要思想是：对每一维的特征“打分”，即给每一维的特征赋予权重，这样的权重就代表着该维特征的重要性，然后依据权重排序。
+
+  主要的方法有：
+
+    Chi-squared test(卡方检验)
+    information gain(信息增益)，详细可见“简单易学的机器学习算法——决策树之ID3算法”
+    correlation coefficient scores(相关系数)
+
+2、Wrapper方法
+
+  其主要思想是：将子集的选择看作是一个搜索寻优问题，生成不同的组合，对组合进行评价，再与其他的组合进行比较。这样就将子集的选择看作是一个是一个优化问题，这里有很多的优化算法可以解决，尤其是一些启发式的优化算法，如GA，PSO，DE，ABC等，详见“优化算法——人工蜂群算法(ABC)”，“优化算法——粒子群算法(PSO)”。
+
+  主要方法有：recursive feature elimination algorithm(递归特征消除算法)
+
+3、Embedded方法
+
+  其主要思想是：在模型既定的情况下学习出对提高模型准确性最好的属性。这句话并不是很好理解，其实是讲在确定模型的过程中，挑选出那些对模型的训练有重要意义的属性。
+
+  主要方法：正则化，可以见“简单易学的机器学习算法——岭回归(RidgeRegression)”，岭回归就是在基本线性回归的过程中加入了正则项。
+
+总结以及注意点
+
+  这篇文章中最后提到了一点就是用特征选择的一点Trap。个人的理解是这样的，特征选择不同于特征提取，特征和模型是分不开，选择不同的特征训练出的模型是不同的。在机器学习=模型+策略+算法的框架下，特征选择就是模型选择的一部分，是分不开的。这样文章最后提到的特征选择和交叉验证就好理解了，是先进行分组还是先进行特征选择。
+
+  答案是当然是先进行分组，因为交叉验证的目的是做模型选择，既然特征选择是模型选择的一部分，那么理所应当是先进行分组。如果先进行特征选择，即在整个数据集中挑选择机，这样挑选的子集就具有随机性。
+
+  我们可以拿正则化来举例，正则化是对权重约束，这样的约束参数是在模型训练的过程中确定的，而不是事先定好然后再进行交叉验证的。
+  https://machinelearningmastery.com/an-introduction-to-feature-selection/
+
+```
+from sklearn.feature_selection import RFECV
+#feature selection
+alg_rfe = RFECV(alg, step = 1, scoring = 'accuracy', cv = cv_split)
+alg_rfe.fit(X, y)
+alg_rfe.support_，alg.get_support_返回一组每个属性是否保留的布尔列表
+#然后就可以得到选择后的数据集
+X_rfe =X[X.columns.values[alg_rfe.support_]]
+得到选择后的属性后可以再进行参数优化提高精度。
+
+from sklearn.datasets import make_friedman1
+from sklearn.feature_selection import RFECV
+from sklearn.svm import SVR
+X, y = make_friedman1(n_samples=50, n_features=10, random_state=0)
+estimator = SVR(kernel="linear")
+selector = RFECV(estimator, step=1, cv=5)
+selector = selector.fit(X, y)
+selector.support_
+selector.get_support()
+```
+
+用集成算法归总所有的算法
